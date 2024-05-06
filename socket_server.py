@@ -3,7 +3,8 @@ import websockets
 
 
 # RASPBERRY_PI_IP = "192.168.1.25"
-RASPBERRY_PI_IP = "10.23.16.71"
+# RASPBERRY_PI_IP = "10.23.16.71"
+RASPBERRY_PI_IP = "192.168.1.44"
 async def echo(websocket, path):
     async for message in websocket:
         print("Received message:", message)

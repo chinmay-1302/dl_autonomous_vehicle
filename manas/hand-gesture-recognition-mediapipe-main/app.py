@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# -- coding: utf-8 --
 import csv
 import copy
 import argparse
@@ -18,9 +18,10 @@ from model import PointHistoryClassifier
 import websockets
 import asyncio
 
-RASPBERRY_PI_IP = '10.23.16.71'
+# RASPBERRY_PI_IP = '10.23.16.71'
+RASPBERRY_PI_IP = '192.168.1.44'
 gesture = ''
-
+ 
 class gesture():
     def __init__(self):
         self._gesture = ''
@@ -31,8 +32,23 @@ class gesture():
 
     @gesture.setter
     def gesture(self, gesture):
-        self._gesture = gesture
-        send_message(gesture)
+        send_flag = 0
+        if gesture == 'Right:Open':
+            self._gesture = '1'
+            send_flag = 1
+        elif gesture == 'Right:Close':
+            self._gesture = '2'
+            send_flag = 1
+        elif gesture == 'Left:Open':
+            self._gesture = '3'
+            send_flag = 1
+        elif gesture == 'Left:Close':
+            self._gesture = '4'
+            send_flag = 1
+        else:
+            send_flag = 0
+        if send_flag == 1:
+            send_message(gesture)
 
 
 mediapipe_gesture = gesture()
