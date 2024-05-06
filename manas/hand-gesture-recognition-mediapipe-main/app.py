@@ -76,7 +76,7 @@ def get_args():
     return args
 
 async def send_message(new_gesture):
-    async with websockets.connect("ws://"+RASPBERRY_PI_IP+":8766") as websocket:
+    async with websockets.connect("ws://"+RASPBERRY_PI_IP+":8765") as websocket:
         message = new_gesture
         await websocket.send(message)
         response = await websocket.recv()

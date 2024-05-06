@@ -3,7 +3,9 @@ import asyncio
 import websockets
 import numpy as np
 
-SERVER_IP = "ws://192.168.1.44:8766"
+# SERVER_IP = "ws://192.168.1.44:8766"
+STREAM_PORT = 8766
+SERVER_IP = "ws://192.168.1.44:"+str(STREAM_PORT)
 
 async def receive_video():
     async with websockets.connect(SERVER_IP) as websocket:
