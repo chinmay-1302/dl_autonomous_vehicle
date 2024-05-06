@@ -1,7 +1,8 @@
 import asyncio
 import websockets
 
-RASPBERRY_PI_IP = '192.168.1.25'
+# RASPBERRY_PI_IP = '192.168.1.25'
+RASPBERRY_PI_IP = '10.23.16.71'
 async def send_message():
     async with websockets.connect("ws://"+RASPBERRY_PI_IP+":8766") as websocket:
         while True:

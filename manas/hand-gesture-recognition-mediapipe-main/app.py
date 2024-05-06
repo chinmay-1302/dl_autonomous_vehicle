@@ -15,6 +15,28 @@ from utils import CvFpsCalc
 from model import KeyPointClassifier
 from model import PointHistoryClassifier
 
+import websockets
+import asyncio
+
+RASPBERRY_PI_IP = '10.23.16.71'
+gesture = ''
+
+class gesture():
+    def __init__(self):
+        self._gesture = ''
+
+    @property
+    def gesture(self):
+        return self._gesture
+
+    @gesture.setter
+    def gesture(self, gesture):
+        self._gesture = gesture
+        send_message(gesture)
+
+
+mediapipe_gesture = gesture()
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -37,6 +59,12 @@ def get_args():
 
     return args
 
+async def send_message(new_gesture):
+    async with websockets.connect("ws://"+RASPBERRY_PI_IP+":8766") as websocket:
+        message = new_gesture
+        await websocket.send(message)
+        response = await websocket.recv()
+        #print("Received response:", response)
 
 def main():
     # Argument parsing #################################################################
@@ -168,6 +196,7 @@ def main():
                     keypoint_classifier_labels[hand_sign_id],
                     point_history_classifier_labels[most_common_fg_id[0][0]],
                 )
+                asyncio.run(send_message(mediapipe_gesture.gesture))
         else:
             point_history.append([0, 0])
 
@@ -491,6 +520,7 @@ def draw_bounding_rect(use_brect, image, brect):
     return image
 
 
+
 def draw_info_text(image, brect, handedness, hand_sign_text,
                    finger_gesture_text):
     cv.rectangle(image, (brect[0], brect[1]), (brect[2], brect[1] - 22),
@@ -501,6 +531,7 @@ def draw_info_text(image, brect, handedness, hand_sign_text,
         info_text = info_text + ':' + hand_sign_text
     cv.putText(image, info_text, (brect[0] + 5, brect[1] - 4),
                cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv.LINE_AA)
+    mediapipe_gesture.gesture = info_text
 
     if finger_gesture_text != "":
         cv.putText(image, "Finger Gesture:" + finger_gesture_text, (10, 60),
