@@ -19,7 +19,8 @@ import websockets
 import asyncio
 
 # RASPBERRY_PI_IP = '10.23.16.71'
-RASPBERRY_PI_IP = '192.168.1.44'
+#RASPBERRY_PI_IP = '192.168.1.44'
+RASPBERRY_PI_IP = '192.168.1.46' # manas
 gesture = ''
  
 class gesture():
