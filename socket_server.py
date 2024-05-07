@@ -54,7 +54,7 @@ async def video_stream(websocket, path):
             prediction = await websocket.recv()
             prediction_dict = json.loads(prediction)
             print(prediction_dict)
-            value = write_read(prediction_dict.command)
+            value = write_read(prediction_dict["command"])
             print(value)
             await asyncio.sleep(1)
         except websockets.ConnectionClosed:
