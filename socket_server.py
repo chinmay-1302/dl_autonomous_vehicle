@@ -3,20 +3,36 @@ import websockets
 import numpy as np
 import cv2
 import json
+import serial
+import time
 
 
 # RASPBERRY_PI_IP = "192.168.1.25"
 # RASPBERRY_PI_IP = "10.23.16.71"
-RASPBERRY_PI_IP = "192.168.1.46"
+RASPBERRY_PI_IP = "192.168.1.47"
 GESTURE_PORT = 8765
 STREAM_PORT = 8766
 VIDEO_SOURCE = 0
 VIDEO_WIDTH = 640
 VIDEO_HEIGHT = 480
 
+# change port according to your device (linux or windows)
+arduino = serial.Serial(port='/dev/ttyUSB0', baudrate=115200, timeout=.1)
+
+
+def write_read(x):
+    arduino.write(bytes(x, 'utf-8'))
+    time.sleep(0.1)
+    data = arduino.readline()
+    # print(data)
+    return data
+
+
 async def echo(websocket, path):
     async for message in websocket:
         print("Received message:", message)
+        value = write_read(message)
+        print(value)
         await websocket.send(message)
 
 
@@ -38,6 +54,8 @@ async def video_stream(websocket, path):
             prediction = await websocket.recv()
             prediction_dict = json.loads(prediction)
             print(prediction_dict)
+            value = write_read(prediction_dict.command)
+            print(value)
             await asyncio.sleep(1)
         except websockets.ConnectionClosed:
             break

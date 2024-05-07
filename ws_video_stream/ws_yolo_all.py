@@ -45,6 +45,7 @@ async def receive_frames_and_send_predictions():
                     annotator.box_label(b, paper_model.names[int(c)])
                     if abs(int(b[3]) - int(b[1])) > 120:
                         paper_names_list.append(paper_model.names[int(c)])
+                        prediction['command'] = '5'
                     # paper_names_list.append([int(b[0]),int(b[1]),int(b[2]),int(b[3])])
                     print(paper_model.names[int(c)])
                 frame = annotator.result()
@@ -60,6 +61,7 @@ async def receive_frames_and_send_predictions():
                     annotator.box_label(b, signs_model.names[int(c)])
                     if abs(int(b[3]) - int(b[1])) > 120:
                         signs_names_list.append(signs_model.names[int(c)])
+                        prediction['command'] = '6'
                     print(signs_model.names[int(c)])
                 frame = annotator.result()
             cv2.imshow('Frame', frame)
