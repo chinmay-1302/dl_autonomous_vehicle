@@ -27,6 +27,7 @@ async def receive_frames_and_send_predictions():
     async with websockets.connect(f"ws://{SERVER_IP}:{SERVER_PORT}") as websocket:
         while True:
             prediction = {}
+            prediction['command'] = ''
             # Receive encoded frame from server
             encoded_frame = await websocket.recv()
             # Decode frame
