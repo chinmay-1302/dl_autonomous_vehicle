@@ -6,9 +6,10 @@ from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator
 import json
 
-SERVER_IP = "192.168.1.47"
+# SERVER_IP = "192.168.1.47"
+SERVER_IP = "172.20.10.3"
 SERVER_PORT = 8766
-PAPER_CONF_THRESHOLD = 0.7
+PAPER_CONF_THRESHOLD = 0.85
 SIGNS_CONF_THRESHOLD = 0.5
 
 # Load a pretrained YOLO model (recommended for training)
@@ -44,7 +45,8 @@ async def receive_frames_and_send_predictions():
                     b = box.xyxy[0]  # get box coordinates in (left, top, right, bottom) format
                     c = box.cls
                     annotator.box_label(b, paper_model.names[int(c)])
-                    if abs(int(b[3]) - int(b[1])) > 120:
+                    # if abs(int(b[3]) - int(b[1])) > 120:
+                    if abs(int(b[3]) - int(b[1])) > 80:
                         paper_names_list.append(paper_model.names[int(c)])
                         prediction['command'] = '5'
                     # paper_names_list.append([int(b[0]),int(b[1]),int(b[2]),int(b[3])])
