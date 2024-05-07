@@ -1,10 +1,7 @@
 import asyncio
 import websockets
-from ultralytics import YOLO
-from ultralytics.utils.plotting import Annotator
 import numpy as np
 import cv2
-import threading
 import json
 
 
