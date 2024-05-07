@@ -4,8 +4,9 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator
+import json
 
-SERVER_IP = "192.168.1.44"
+SERVER_IP = "192.168.1.46"
 SERVER_PORT = 8767
 CONF_THRESHOLD = 0.7
 
@@ -45,11 +46,19 @@ async def receive_frames_and_send_predictions():
                 break
             # Process prediction results (for demonstration, just send the first prediction back to server)
             if results:
-                prediction = str(names_list)
+                # prediction = str(names_list)
+                prediction = {
+                    'model': 'paper',
+                    'classes': names_list,
+                }
             else:
-                prediction = "No prediction"
+                # prediction = "No prediction"
+                prediction = {
+                    'model': 'paper',
+                    'classes': None
+                }
             # Send prediction back to server
-            await websocket.send(prediction)
+            await websocket.send(json.dumps(prediction))
 
 
 # Run the client
