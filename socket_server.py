@@ -5,15 +5,16 @@ from ultralytics.utils.plotting import Annotator
 import numpy as np
 import cv2
 import threading
+import json
 
 
 # RASPBERRY_PI_IP = "192.168.1.25"
 # RASPBERRY_PI_IP = "10.23.16.71"
-RASPBERRY_PI_IP = "192.168.1.44"
+RASPBERRY_PI_IP = "192.168.1.46"
 GESTURE_PORT = 8765
 SIGN_STREAM_PORT = 8766
 PAPER_STREAM_PORT = 8767
-VIDEO_SOURCE = 2
+VIDEO_SOURCE = 0
 
 
 async def echo(websocket, path):
@@ -58,9 +59,9 @@ async def paper_video_stream(websocket, path):
         try:
             await websocket.send(data)
             prediction = await websocket.recv()
-            if len(prediction) > 2:
-                prediction = prediction[1:-1]
-                print("Received prediction:", prediction)
+            prediction_dict = json.loads(prediction)
+            print(prediction_dict)
+            await asyncio.sleep(1)
         except websockets.ConnectionClosed:
             break
     cap.release()

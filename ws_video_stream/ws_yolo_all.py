@@ -7,7 +7,7 @@ from ultralytics.utils.plotting import Annotator
 import json
 
 SERVER_IP = "192.168.1.46"
-SERVER_PORT = 8767
+SERVER_PORT = 8766
 PAPER_CONF_THRESHOLD = 0.7
 SIGNS_CONF_THRESHOLD = 0.5
 
