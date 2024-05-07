@@ -6,7 +6,7 @@ from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator
 import json
 
-SERVER_IP = "192.168.1.46"
+SERVER_IP = "192.168.1.47"
 SERVER_PORT = 8766
 PAPER_CONF_THRESHOLD = 0.7
 SIGNS_CONF_THRESHOLD = 0.5
@@ -43,7 +43,7 @@ async def receive_frames_and_send_predictions():
                     b = box.xyxy[0]  # get box coordinates in (left, top, right, bottom) format
                     c = box.cls
                     annotator.box_label(b, paper_model.names[int(c)])
-                    if abs(int(b[3]) - int(b[1])) > 200:
+                    if abs(int(b[3]) - int(b[1])) > 120:
                         paper_names_list.append(paper_model.names[int(c)])
                     # paper_names_list.append([int(b[0]),int(b[1]),int(b[2]),int(b[3])])
                     print(paper_model.names[int(c)])
@@ -58,7 +58,8 @@ async def receive_frames_and_send_predictions():
                     b = box.xyxy[0]  # get box coordinates in (left, top, right, bottom) format
                     c = box.cls
                     annotator.box_label(b, signs_model.names[int(c)])
-                    signs_names_list.append(signs_model.names[int(c)])
+                    if abs(int(b[3]) - int(b[1])) > 120:
+                        signs_names_list.append(signs_model.names[int(c)])
                     print(signs_model.names[int(c)])
                 frame = annotator.result()
             cv2.imshow('Frame', frame)

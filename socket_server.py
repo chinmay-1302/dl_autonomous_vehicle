@@ -11,7 +11,8 @@ RASPBERRY_PI_IP = "192.168.1.46"
 GESTURE_PORT = 8765
 STREAM_PORT = 8766
 VIDEO_SOURCE = 0
-
+VIDEO_WIDTH = 640
+VIDEO_HEIGHT = 480
 
 async def echo(websocket, path):
     async for message in websocket:
@@ -22,6 +23,8 @@ async def echo(websocket, path):
 async def video_stream(websocket, path):
     print("Video stream started")
     cap = cv2.VideoCapture(VIDEO_SOURCE)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, VIDEO_WIDTH)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, VIDEO_HEIGHT)
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
